@@ -1,0 +1,88 @@
+<?php
+
+use \Drupal\Core\Routing\RouteMatchInterface;
+
+function gin_login_page_attachments_alter(&$page) {
+  // Get path
+  $route = \Drupal::routeMatch()->getRouteName();
+
+  // Chek if path is available and we're at user level
+  if (
+    $route == 'user.login' ||
+    $route == 'user.pass' ||
+    $route == 'user.register'
+  ) {
+    $page['#attached']['library'][] = 'gin_login/gin_login';
+  }
+}
+
+/**
+ ** Page title alter()
+ **/
+function gin_login_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
+  // Are we looking at a user?
+  $route = \Drupal::routeMatch()->getRouteName();
+
+  // Chek if path is available and we're at user level
+  if (
+    $route == 'user.login' ||
+    $route == 'user.pass' ||
+    $route == 'user.register'
+  ) {
+    $path = str_replace('.', '_', $route);
+
+    $suggestions[] = 'page_title__user';
+    $suggestions[] = 'page_title__' . $path;
+  }
+}
+
+/**
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function gin_login_form_alter(&$form, $form_state, $form_id) {
+  // User form (Login, Register or Forgot password)
+  if (strpos($form_id, 'user_login') !== false || strpos($form_id, 'user_register') !== false || strpos($form_id, 'user_pass') !== false) {
+    $form['actions']['submit']['#attributes']['class'][] = 'button--primary';
+  }
+ }
+
+/**
+ ** Theme()
+ **/
+function gin_login_theme() {
+  // Page
+  $theme['page__user__login'] = [
+    'template' => 'page/page--user--login',
+  ];
+  $theme['page__user__password'] = [
+    'template' => 'page/page--user--password',
+  ];
+  $theme['page__user__register'] = [
+    'template' => 'page/page--user--register',
+  ];
+
+  // Form
+  $theme['form__user_login_form'] = [
+    'template' => 'form/form--user-login-form',
+  ];
+  $theme['form__user_pass'] = [
+    'template' => 'form/form--user-pass',
+  ];
+  $theme['form__user_register_form'] = [
+    'template' => 'form/form--user-register-form',
+  ];
+
+  // Title
+  $theme['page_title__user_login'] = [
+    'template' => 'content/page-title--user-login',
+  ];
+  $theme['page_title__user_pass'] = [
+    'template' => 'content/page-title--user-pass',
+  ];
+  $theme['page_title__user_register'] = [
+    'template' => 'content/page-title--user-register',
+  ];
+  return $theme;
+}

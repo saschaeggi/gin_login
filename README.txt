@@ -1,1 +1,1 @@
-Gin Login
+Custom Drupal Login for Gin theme
