@@ -2,4 +2,4 @@ gin_login:
   version: 1.x
   css:
     theme:
-      css/gin_login.css: {}
+      dist/css/gin_login.css: { weight: -99 }

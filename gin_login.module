@@ -1,6 +1,8 @@
 <?php
 
 use \Drupal\Core\Routing\RouteMatchInterface;
+use \Drupal\Core\Url;
+use \Drupal\Core\Asset\AttachedAssetsInterface;
 
 function gin_login_page_attachments_alter(&$page) {
   // Get path
@@ -46,6 +48,45 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
   if (strpos($form_id, 'user_login') !== false || strpos($form_id, 'user_register') !== false || strpos($form_id, 'user_pass') !== false) {
     $form['actions']['submit']['#attributes']['class'][] = 'button--primary';
   }
+
+  // Adding button/links to Register and Forgot password
+  if (strpos($form_id, 'user_login') !== false) {
+    // Move actions before new elements
+    $form['actions']['#weight'] = '98';
+
+    // Add new class to submit button
+    $form['actions']['submit']['#attributes']['class'][] = 'button-login';
+
+    // New wrapper
+    $form['more-links'] = array(
+      '#type' => 'container',
+      '#weight' => '99',
+      '#attributes' => ['class'=>['more-links']],
+    );
+
+    // Register button
+    $form['more-links']['register_button'] = array(
+      '#type' => 'link',
+      '#url' => Url::fromRoute('user.register'),
+      '#title' => t('Create new account'),
+      '#attributes' => ['class'=>['register-button', 'button', 'button--secondary']],
+      '#weight' => '1'
+    );
+
+    // Forgot password link
+    $form['more-links']['forgot_password_link'] = array(
+      '#type' => 'link',
+      '#url' => Url::fromRoute('user.pass'),
+      '#title' => t('Forgot your password?'),
+      '#attributes' => ['class'=>['link', 'forgot-password-link']],
+      '#weight' => '2'
+    );
+  }
+
+  // Changing name of Reset button
+  if (strpos($form_id, 'user_pass') !== false) {
+    $form['actions']['submit']['#value'] = t('Reset');
+  }
  }
 
 /**
@@ -63,17 +104,6 @@ function gin_login_theme() {
     'template' => 'page/page--user--register',
   ];
 
-  // Form
-  $theme['form__user_login_form'] = [
-    'template' => 'form/form--user-login-form',
-  ];
-  $theme['form__user_pass'] = [
-    'template' => 'form/form--user-pass',
-  ];
-  $theme['form__user_register_form'] = [
-    'template' => 'form/form--user-register-form',
-  ];
-
   // Title
   $theme['page_title__user_login'] = [
     'template' => 'content/page-title--user-login',
@@ -84,5 +114,18 @@ function gin_login_theme() {
   $theme['page_title__user_register'] = [
     'template' => 'content/page-title--user-register',
   ];
+
   return $theme;
+}
+
+/**
+ ** CSS()
+ **/
+function gin_login_css_alter(&$css, $assets) {
+  // UPDATE THIS PATH TO YOUR MODULE'S CSS PATH
+  $path = drupal_get_path('module', 'gin_login') . '/dist/css/gin_login.css';
+  if (isset($css[$path])) {
+    // Use anything greater than 100 to have it load after the theme as CSS_AGGREGATE_THEME is set to 100.
+    $css[$path]['group'] = 200;
+  }
 }

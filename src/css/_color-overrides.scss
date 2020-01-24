@@ -1,0 +1,26 @@
+.button--primary {
+  background-color: var(--colorPrimary);
+
+  &:hover,
+  &:active {
+    background-color: var(--colorPrimaryHover);
+  }
+}
+
+.forgot-password-link {
+  color: var(--colorPrimary);
+
+  &:hover,
+  &:active {
+    color: var(--colorPrimaryHover);
+  }
+}
+
+.form-boolean--type-checkbox:checked {
+  border-color: var(--colorPrimary);
+
+  &:hover,
+  &:active {
+    border-color: var(--colorPrimaryHover);
+  }
+}
