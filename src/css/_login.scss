@@ -50,10 +50,15 @@
 
   &__drupal-logo {
     display: block;
-    width: 120px;
-    height: 30px;
+    width: 88px;
+    height: 22px;
     margin-top: 1rem;
     background: url(../images/drupal.svg) no-repeat top left;
+
+    @media (min-width: $breakpoint) {
+      width: 120px;
+      height: 30px;
+    }
   }
 
   &__page-title {
