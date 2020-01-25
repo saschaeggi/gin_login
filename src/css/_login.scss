@@ -139,5 +139,9 @@
     @media (max-width: $breakpoint) {
       margin-top: 1rem;
     }
+
+    &:first-child {
+      margin-top: 1rem;
+    }
   }
 }
