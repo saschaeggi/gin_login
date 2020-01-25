@@ -1,14 +1,57 @@
 <?php
 
-use \Drupal\Core\Routing\RouteMatchInterface;
-use \Drupal\Core\Url;
-use \Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\Core\Render\Markup;
 
 function gin_login_page_attachments_alter(&$page) {
   // Get path
   $route = \Drupal::routeMatch()->getRouteName();
 
-  // Chek if path is available and we're at user level
+  // Is User logged in?
+  $logged_in = \Drupal::currentUser()->isAuthenticated();
+
+  // Is Gin the default admin theme?
+  $admin_theme = \Drupal::config('system.theme')->get('admin');
+
+  if ($admin_theme === 'gin') {
+    // Get user config accent color
+    $config = \Drupal::config('gin.settings');
+    $accent_color = $config->get('accent_color');
+
+    if ($accent_color) {
+      $accent_color_hover = _gin_login_adjustBrightness($accent_color, -0.1);
+      $accent_color_active = _gin_login_adjustBrightness($accent_color, -0.2);
+      $accent_color_a20 = _gin_login_adjustBrightness($accent_color, 0.92);
+      $accent_color_svg = str_replace('#', '%23', $accent_color);
+
+      $accent_color_css = <<<EOH
+        :root {
+          --colorPrimary: $accent_color !important;
+          --colorPrimaryHover: $accent_color_hover !important;
+          --colorPrimaryActive: $accent_color_active !important;
+        }
+      EOH;
+
+      if (
+        $logged_in ||
+        $route == 'user.login' ||
+        $route == 'user.pass' ||
+        $route == 'user.register'
+      ) {
+        $page['#attached']['html_head'][] = [
+          [
+            '#tag' => 'style',
+            '#value' => Markup::create($accent_color_css),
+          ],
+          'gin-accent-color'
+        ];
+      }
+    }
+  }
+
+  // Check if path is available and we're at user level
   if (
     $route == 'user.login' ||
     $route == 'user.pass' ||
@@ -22,7 +65,7 @@ function gin_login_page_attachments_alter(&$page) {
  ** Page title alter()
  **/
 function gin_login_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
-  // Are we looking at a user?
+  // Get path
   $route = \Drupal::routeMatch()->getRouteName();
 
   // Chek if path is available and we're at user level
@@ -128,4 +171,31 @@ function gin_login_css_alter(&$css, $assets) {
     // Use anything greater than 100 to have it load after the theme as CSS_AGGREGATE_THEME is set to 100.
     $css[$path]['group'] = 200;
   }
+}
+
+/**
+ * Increases or decreases the brightness of a color by a percentage of the current brightness.
+ *
+ * @param   string  $hexCode        Supported formats: `#FFF`, `#FFFFFF`, `FFF`, `FFFFFF`
+ * @param   float   $adjustPercent  A number between -1 and 1. E.g. 0.3 = 30% lighter; -0.4 = 40% darker.
+ *
+ * @return  string
+ */
+function _gin_login_adjustBrightness($hexCode, $adjustPercent) {
+  $hexCode = ltrim($hexCode, '#');
+
+  if (strlen($hexCode) == 3) {
+      $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
+  }
+
+  $hexCode = array_map('hexdec', str_split($hexCode, 2));
+
+  foreach ($hexCode as & $color) {
+      $adjustableLimit = $adjustPercent < 0 ? $color : 255 - $color;
+      $adjustAmount = ceil($adjustableLimit * $adjustPercent);
+
+      $color = str_pad(dechex($color + $adjustAmount), 2, '0', STR_PAD_LEFT);
+  }
+
+  return '#' . implode($hexCode);
 }
