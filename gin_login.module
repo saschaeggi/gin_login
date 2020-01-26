@@ -1,13 +1,18 @@
 <?php
 
-use Drupal\Core\Routing\RouteMatchInterface;
+/**
+ * @file
+ */
+
 use Drupal\Core\Url;
-use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\user\UserInterface;
 
+/**
+ *
+ */
 function gin_login_page_attachments_alter(&$page) {
-  // Get path
+  // Get path.
   $route = \Drupal::routeMatch()->getRouteName();
 
   // Is User logged in?
@@ -17,7 +22,7 @@ function gin_login_page_attachments_alter(&$page) {
   $admin_theme = \Drupal::config('system.theme')->get('admin');
 
   if ($admin_theme === 'gin') {
-    // Get user config accent color
+    // Get user config accent color.
     $config = \Drupal::config('gin.settings');
     $accent_color = $config->get('accent_color');
 
@@ -46,13 +51,13 @@ function gin_login_page_attachments_alter(&$page) {
             '#tag' => 'style',
             '#value' => Markup::create($accent_color_css),
           ],
-          'gin-accent-color'
+          'gin-accent-color',
         ];
       }
     }
   }
 
-  // Check if path is available and we're at user level
+  // Check if path is available and we're at user level.
   if (
     $route == 'user.login' ||
     $route == 'user.pass' ||
@@ -63,13 +68,13 @@ function gin_login_page_attachments_alter(&$page) {
 }
 
 /**
- ** Page title alter()
+ * * Page title alter()
  **/
 function gin_login_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
-  // Get path
+  // Get path.
   $route = \Drupal::routeMatch()->getRouteName();
 
-  // Chek if path is available and we're at user level
+  // Chek if path is available and we're at user level.
   if (
     $route == 'user.login' ||
     $route == 'user.pass' ||
@@ -89,57 +94,57 @@ function gin_login_theme_suggestions_page_title_alter(array &$suggestions, array
  */
 function gin_login_form_alter(&$form, $form_state, $form_id) {
   // User form (Login, Register or Forgot password)
-  if (strpos($form_id, 'user_login') !== false || strpos($form_id, 'user_register') !== false || strpos($form_id, 'user_pass') !== false) {
+  if (strpos($form_id, 'user_login') !== FALSE || strpos($form_id, 'user_register') !== FALSE || strpos($form_id, 'user_pass') !== FALSE) {
     $form['actions']['submit']['#attributes']['class'][] = 'button--primary';
   }
 
-  // Adding button/links to Register and Forgot password
-  if (strpos($form_id, 'user_login') !== false) {
-    // Move actions before new elements
+  // Adding button/links to Register and Forgot password.
+  if (strpos($form_id, 'user_login') !== FALSE) {
+    // Move actions before new elements.
     $form['actions']['#weight'] = '98';
 
-    // Add new class to submit button
+    // Add new class to submit button.
     $form['actions']['submit']['#attributes']['class'][] = 'button-login';
 
-    // New wrapper
-    $form['more-links'] = array(
+    // New wrapper.
+    $form['more-links'] = [
       '#type' => 'container',
       '#weight' => '99',
-      '#attributes' => ['class'=>['more-links']],
-    );
+      '#attributes' => ['class' => ['more-links']],
+    ];
 
-    // Register button
+    // Register button.
     if (\Drupal::config('user.settings')->get('register') != UserInterface::REGISTER_ADMINISTRATORS_ONLY) {
-      $form['more-links']['register_button'] = array(
+      $form['more-links']['register_button'] = [
         '#type' => 'link',
         '#url' => Url::fromRoute('user.register'),
         '#title' => t('Create new account'),
-        '#attributes' => ['class'=>['register-button', 'button', 'button--secondary']],
-        '#weight' => '1'
-      );
+        '#attributes' => ['class' => ['register-button', 'button', 'button--secondary']],
+        '#weight' => '1',
+      ];
     }
 
-    // Forgot password link
-    $form['more-links']['forgot_password_link'] = array(
+    // Forgot password link.
+    $form['more-links']['forgot_password_link'] = [
       '#type' => 'link',
       '#url' => Url::fromRoute('user.pass'),
       '#title' => t('Forgot your password?'),
-      '#attributes' => ['class'=>['link', 'forgot-password-link']],
-      '#weight' => '2'
-    );
+      '#attributes' => ['class' => ['link', 'forgot-password-link']],
+      '#weight' => '2',
+    ];
   }
 
-  // Changing name of Reset button
-  if (strpos($form_id, 'user_pass') !== false) {
+  // Changing name of Reset button.
+  if (strpos($form_id, 'user_pass') !== FALSE) {
     $form['actions']['submit']['#value'] = t('Reset');
   }
- }
+}
 
 /**
- ** Theme()
+ * * Theme()
  **/
 function gin_login_theme() {
-  // Page
+  // Page.
   $theme['page__user__login'] = [
     'template' => 'page/page--user--login',
   ];
@@ -150,7 +155,7 @@ function gin_login_theme() {
     'template' => 'page/page--user--register',
   ];
 
-  // Title
+  // Title.
   $theme['page_title__user_login'] = [
     'template' => 'content/page-title--user-login',
   ];
@@ -165,10 +170,10 @@ function gin_login_theme() {
 }
 
 /**
- ** CSS()
+ * * CSS()
  **/
 function gin_login_css_alter(&$css, $assets) {
-  // UPDATE THIS PATH TO YOUR MODULE'S CSS PATH
+  // UPDATE THIS PATH TO YOUR MODULE'S CSS PATH.
   $path = drupal_get_path('module', 'gin_login') . '/dist/css/gin_login.css';
   if (isset($css[$path])) {
     // Use anything greater than 100 to have it load after the theme as CSS_AGGREGATE_THEME is set to 100.
@@ -179,25 +184,27 @@ function gin_login_css_alter(&$css, $assets) {
 /**
  * Increases or decreases the brightness of a color by a percentage of the current brightness.
  *
- * @param   string  $hexCode        Supported formats: `#FFF`, `#FFFFFF`, `FFF`, `FFFFFF`
- * @param   float   $adjustPercent  A number between -1 and 1. E.g. 0.3 = 30% lighter; -0.4 = 40% darker.
+ * @param string $hexCode
+ *   Supported formats: `#FFF`, `#FFFFFF`, `FFF`, `FFFFFF`.
+ * @param float $adjustPercent
+ *   A number between -1 and 1. E.g. 0.3 = 30% lighter; -0.4 = 40% darker.
  *
- * @return  string
+ * @return string
  */
 function _gin_login_adjustBrightness($hexCode, $adjustPercent) {
   $hexCode = ltrim($hexCode, '#');
 
   if (strlen($hexCode) == 3) {
-      $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
+    $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
   }
 
   $hexCode = array_map('hexdec', str_split($hexCode, 2));
 
   foreach ($hexCode as & $color) {
-      $adjustableLimit = $adjustPercent < 0 ? $color : 255 - $color;
-      $adjustAmount = ceil($adjustableLimit * $adjustPercent);
+    $adjustableLimit = $adjustPercent < 0 ? $color : 255 - $color;
+    $adjustAmount = ceil($adjustableLimit * $adjustPercent);
 
-      $color = str_pad(dechex($color + $adjustAmount), 2, '0', STR_PAD_LEFT);
+    $color = str_pad(dechex($color + $adjustAmount), 2, '0', STR_PAD_LEFT);
   }
 
   return '#' . implode($hexCode);
