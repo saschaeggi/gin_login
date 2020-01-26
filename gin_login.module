@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * gin_login.module
  */
 
 use Drupal\Core\Url;
@@ -9,7 +10,7 @@ use Drupal\Core\Render\Markup;
 use Drupal\user\UserInterface;
 
 /**
- *
+ * Page_attachments_alter()
  */
 function gin_login_page_attachments_alter(&$page) {
   // Get path.
@@ -27,9 +28,9 @@ function gin_login_page_attachments_alter(&$page) {
     $accent_color = $config->get('accent_color');
 
     if ($accent_color) {
-      $accent_color_hover = _gin_login_adjustBrightness($accent_color, -0.1);
-      $accent_color_active = _gin_login_adjustBrightness($accent_color, -0.2);
-      $accent_color_a20 = _gin_login_adjustBrightness($accent_color, 0.92);
+      $accent_color_hover = _gin_login_adjust_brightness($accent_color, -0.1);
+      $accent_color_active = _gin_login_adjust_brightness($accent_color, -0.2);
+      $accent_color_a20 = _gin_login_adjust_brightness($accent_color, 0.92);
       $accent_color_svg = str_replace('#', '%23', $accent_color);
 
       $accent_color_css = <<<EOH
@@ -68,8 +69,8 @@ function gin_login_page_attachments_alter(&$page) {
 }
 
 /**
- * * Page title alter()
- **/
+ * Page title alter()
+ */
 function gin_login_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
   // Get path.
   $route = \Drupal::routeMatch()->getRouteName();
@@ -88,9 +89,7 @@ function gin_login_theme_suggestions_page_title_alter(array &$suggestions, array
 }
 
 /**
- * @param $form
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- * @param $form_id
+ * Form_alter()
  */
 function gin_login_form_alter(&$form, $form_state, $form_id) {
   // User form (Login, Register or Forgot password)
@@ -119,7 +118,13 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
         '#type' => 'link',
         '#url' => Url::fromRoute('user.register'),
         '#title' => t('Create new account'),
-        '#attributes' => ['class' => ['register-button', 'button', 'button--secondary']],
+        '#attributes' => [
+          'class' => [
+            'register-button',
+            'button',
+            'button--secondary',
+          ],
+        ],
         '#weight' => '1',
       ];
     }
@@ -141,8 +146,8 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
 }
 
 /**
- * * Theme()
- **/
+ * Theme()
+ */
 function gin_login_theme() {
   // Page.
   $theme['page__user__login'] = [
@@ -170,28 +175,22 @@ function gin_login_theme() {
 }
 
 /**
- * * CSS()
- **/
+ * CSS_alter()
+ */
 function gin_login_css_alter(&$css, $assets) {
   // UPDATE THIS PATH TO YOUR MODULE'S CSS PATH.
   $path = drupal_get_path('module', 'gin_login') . '/dist/css/gin_login.css';
   if (isset($css[$path])) {
-    // Use anything greater than 100 to have it load after the theme as CSS_AGGREGATE_THEME is set to 100.
+    // Use anything greater than 100 to have it load
+    // after the theme as CSS_AGGREGATE_THEME is set to 100.
     $css[$path]['group'] = 200;
   }
 }
 
 /**
- * Increases or decreases the brightness of a color by a percentage of the current brightness.
- *
- * @param string $hexCode
- *   Supported formats: `#FFF`, `#FFFFFF`, `FFF`, `FFFFFF`.
- * @param float $adjustPercent
- *   A number between -1 and 1. E.g. 0.3 = 30% lighter; -0.4 = 40% darker.
- *
- * @return string
+ * Increases or decreases the brightness of a color.
  */
-function _gin_login_adjustBrightness($hexCode, $adjustPercent) {
+function _gin_login_adjust_brightness($hexCode, $adjustPercent) {
   $hexCode = ltrim($hexCode, '#');
 
   if (strlen($hexCode) == 3) {
