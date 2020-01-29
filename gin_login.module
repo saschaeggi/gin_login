@@ -19,42 +19,37 @@ function gin_login_page_attachments_alter(&$page) {
   // Is User logged in?
   $logged_in = \Drupal::currentUser()->isAuthenticated();
 
-  // Is Gin the default admin theme?
-  $admin_theme = \Drupal::config('system.theme')->get('admin');
+  // Get user config accent color.
+  $config = \Drupal::config('gin.settings');
+  $accent_color = $config->get('accent_color');
 
-  if ($admin_theme === 'gin') {
-    // Get user config accent color.
-    $config = \Drupal::config('gin.settings');
-    $accent_color = $config->get('accent_color');
+  if ($accent_color) {
+    $accent_color_hover = _gin_login_adjust_brightness($accent_color, -0.1);
+    $accent_color_active = _gin_login_adjust_brightness($accent_color, -0.2);
+    $accent_color_a20 = _gin_login_adjust_brightness($accent_color, 0.92);
+    $accent_color_svg = str_replace('#', '%23', $accent_color);
 
-    if ($accent_color) {
-      $accent_color_hover = _gin_login_adjust_brightness($accent_color, -0.1);
-      $accent_color_active = _gin_login_adjust_brightness($accent_color, -0.2);
-      $accent_color_a20 = _gin_login_adjust_brightness($accent_color, 0.92);
-      $accent_color_svg = str_replace('#', '%23', $accent_color);
-
-      $accent_color_css = <<<EOH
-        :root {
-          --colorPrimary: $accent_color !important;
-          --colorPrimaryHover: $accent_color_hover !important;
-          --colorPrimaryActive: $accent_color_active !important;
-        }
-      EOH;
-
-      if (
-        $logged_in ||
-        $route == 'user.login' ||
-        $route == 'user.pass' ||
-        $route == 'user.register'
-      ) {
-        $page['#attached']['html_head'][] = [
-          [
-            '#tag' => 'style',
-            '#value' => Markup::create($accent_color_css),
-          ],
-          'gin-accent-color',
-        ];
+    $accent_color_css = <<<EOH
+      :root {
+        --colorPrimary: $accent_color !important;
+        --colorPrimaryHover: $accent_color_hover !important;
+        --colorPrimaryActive: $accent_color_active !important;
       }
+EOH;
+
+    if (
+      $logged_in ||
+      $route == 'user.login' ||
+      $route == 'user.pass' ||
+      $route == 'user.register'
+    ) {
+      $page['#attached']['html_head'][] = [
+        [
+          '#tag' => 'style',
+          '#value' => Markup::create($accent_color_css),
+        ],
+        'gin-accent-color',
+      ];
     }
   }
 
