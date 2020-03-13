@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Claro's theme implementation to display a single Drupal page.
+ *  's theme implementation to display a single Drupal page.
  *
  * The doctype, html, head, and body tags are not in this template. Instead
  * they can be found in the html.html.twig template normally located in the
@@ -43,30 +43,33 @@
   <div class="user-form-page__user-form">
     <header class="content-header clearfix">
       <div class="layout-container">
-        <a class="user-form-page__drupal-logo" href="/user/login" alt="Drupal {{ 'Login'|t }}"></a>
-
-        {# {{ page.breadcrumb }} #}
-        {{ page.header|without('claro_primary_local_tasks') }}
+       <a href="{{ url('<front>') }}">
+        <img src="{{ logo }}" alt="{{ site_name }}" />
+      </a>
       </div>
     </header>
 
     <div class="layout-container">
-      {{ page.pre_content|without('claro_primary_local_tasks') }}
+      {{ page.pre_content|without('claro_primary_local_tasks', 'gin_primary_local_tasks') }}
       <main class="page-content clearfix" role="main">
         <div class="visually-hidden"><a id="main-content" tabindex="-1"></a></div>
+        {% block title %}
+          <h1 class="page-title user-form-page__page-title">{{ 'Log in'|t }}</h1>
+        {% endblock %}
         {{ page.highlighted }}
         {% if page.help %}
           <div class="help">
             {{ page.help }}
           </div>
         {% endif %}
-        {{ page.content|without('claro_primary_local_tasks') }}
+        {{ page.content|without('claro_primary_local_tasks', 'gin_primary_local_tasks') }}
       </main>
 
     </div>
   </div>
+
   <div class="user-form-page__wallpaper">
     <!-- Wallpaper goes here -->
-    <img src="//source.unsplash.com/collection/9407737" alt="Random image from unsplash" />
+    <img src="{{ brand_image }}" alt="{{ brand_alt }}" />
   </div>
 </div>

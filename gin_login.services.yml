@@ -1,5 +1,5 @@
 services:
   gin_login.theme.negotiator:
-      class: Drupal\gin_login\Theme\ThemeNegotiator
-      tags:
-        - { name: theme_negotiator, priority: 1000 }
+    class: Drupal\gin_login\Theme\ThemeNegotiator
+    tags:
+      - { name: theme_negotiator, priority: 1000 }

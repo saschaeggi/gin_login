@@ -35,8 +35,6 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
    * @return bool|string
    */
   private function negotiateRoute(RouteMatchInterface $route_match) {
-    $userRolesArray = \Drupal::currentUser()->getRoles();
-
     if (
         $route_match->getRouteName() == 'user.login' ||
         $route_match->getRouteName() == 'user.pass' ||

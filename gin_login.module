@@ -146,24 +146,16 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
 function gin_login_theme() {
   // Page.
   $theme['page__user__login'] = [
-    'template' => 'page/page--user--login',
+    'template' => 'page--user--login',
+    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
   ];
   $theme['page__user__password'] = [
-    'template' => 'page/page--user--password',
+    'template' => 'page--user--password',
+    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
   ];
   $theme['page__user__register'] = [
-    'template' => 'page/page--user--register',
-  ];
-
-  // Title.
-  $theme['page_title__user_login'] = [
-    'template' => 'content/page-title--user-login',
-  ];
-  $theme['page_title__user_pass'] = [
-    'template' => 'content/page-title--user-pass',
-  ];
-  $theme['page_title__user_register'] = [
-    'template' => 'content/page-title--user-register',
+    'template' => 'page--user--register',
+    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
   ];
 
   return $theme;
@@ -202,4 +194,31 @@ function _gin_login_adjust_brightness($hexCode, $adjustPercent) {
   }
 
   return '#' . implode($hexCode);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function gin_login_preprocess_ginlogin(&$variables) {
+  $config = \Drupal::config('gin_login_configuration.settings');
+  $variables['site_name'] = \Drupal::config('system.site')->get('name');
+  $defaultLogo = drupal_get_path('module', 'gin_login') . '/images/drupal.svg';
+  $variables['logo'] = file_create_url($defaultLogo);
+  $configData = $config->get();
+
+  if ($configData['logo']['use_default'] == "0") {
+    if (isset($configData['logo']['path']) && !empty($configData['logo']['path'])) {
+      $variables['logo'] = file_create_url($configData['logo']['path']);
+    }
+  }
+
+  $variables['brand_image'] = '//source.unsplash.com/collection/9407737';
+  $variables['brand_alt'] = 'Random image from unsplash';
+
+  if ($configData['brand_image']['use_default'] == "0") {
+    if (isset($configData['brand_image']['path']) && !empty($configData['brand_image']['path'])) {
+      $variables['brand_image'] = file_create_url($configData['brand_image']['path']);
+      $variables['brand_alt'] = '';
+    }
+  }
 }

@@ -109,7 +109,7 @@ module.exports = {
     }),
     new BrowserSyncPlugin({
       proxy: {
-        target: 'https://dropa.local',
+        target: 'https://drupal.local',
         proxyReq: [
           function(proxyReq) {
             proxyReq.setHeader('Cache-Control', 'no-cache, no-store');
