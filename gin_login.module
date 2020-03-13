@@ -200,7 +200,7 @@ function _gin_login_adjust_brightness($hexCode, $adjustPercent) {
  * Implements hook_preprocess_HOOK().
  */
 function gin_login_preprocess_ginlogin(&$variables) {
-  $config = \Drupal::config('gin_login_configuration.settings');
+  $config = \Drupal::config('gin_login.settings');
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
   $defaultLogo = drupal_get_path('module', 'gin_login') . '/images/drupal.svg';
   $variables['logo'] = file_create_url($defaultLogo);

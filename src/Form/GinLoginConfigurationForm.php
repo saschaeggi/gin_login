@@ -15,7 +15,7 @@ class GinLoginConfigurationForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'gin_login_configuration.settings',
+      'gin_login.settings',
     ];
   }
 
@@ -23,14 +23,14 @@ class GinLoginConfigurationForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'gin_login_configuration_form';
+    return 'gin_login_form';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('gin_login_configuration.settings');
+    $config = $this->config('gin_login.settings');
     $default_scheme = $this->config('system.file')->get('default_scheme');
     $form['logo'] = [
       '#type' => 'details',
@@ -165,7 +165,7 @@ class GinLoginConfigurationForm extends ConfigFormBase {
     $values = $form_state->getValues();
     $file_system = \Drupal::service('file_system');
     $default_scheme = $this->config('system.file')->get('default_scheme');
-    $config = $this->config('gin_login_configuration.settings');
+    $config = $this->config('gin_login.settings');
     try {
       if (!empty($values['logo_upload'])) {
         $filename = $file_system->copy($values['logo_upload']->getFileUri(), $default_scheme . '://');
