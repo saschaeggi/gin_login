@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Url;
-use Drupal\Core\Render\Markup;
 use Drupal\user\UserInterface;
 
 /**
@@ -16,50 +15,27 @@ function gin_login_page_attachments_alter(&$page) {
   // Get path.
   $route = \Drupal::routeMatch()->getRouteName();
 
-  // Is User logged in?
-  $logged_in = \Drupal::currentUser()->isAuthenticated();
-
-  // Get user config accent color.
-  $config = \Drupal::config('gin.settings');
-  $accent_color = $config->get('accent_color');
-
-  if ($accent_color) {
-    $accent_color_hover = _gin_login_adjust_brightness($accent_color, -0.1);
-    $accent_color_active = _gin_login_adjust_brightness($accent_color, -0.2);
-    $accent_color_a20 = _gin_login_adjust_brightness($accent_color, 0.92);
-    $accent_color_svg = str_replace('#', '%23', $accent_color);
-
-    $accent_color_css = <<<EOH
-      :root {
-        --colorGinPrimary: $accent_color !important;
-        --colorGinPrimaryHover: $accent_color_hover !important;
-        --colorGinPrimaryActive: $accent_color_active !important;
-      }
-EOH;
-
-    if (
-      $logged_in ||
-      $route == 'user.login' ||
-      $route == 'user.pass' ||
-      $route == 'user.register'
-    ) {
-      $page['#attached']['html_head'][] = [
-        [
-          '#tag' => 'style',
-          '#value' => Markup::create($accent_color_css),
-        ],
-        'gin-accent-color',
-      ];
-    }
-  }
-
-  // Check if path is available and we're at user level.
   if (
     $route == 'user.login' ||
     $route == 'user.pass' ||
     $route == 'user.register'
   ) {
+    // Get theme configs.
+    $accent_color = theme_get_setting('accent_color', 'gin');
+    $darkmode = theme_get_setting('enable_darkmode', 'gin');
+
+    // Attach Gin styles.
+    $page['#attached']['library'][] = 'gin/gin';
+
+    // Attach accent overrides CSS.
+    $page['#attached']['library'][] = 'gin/gin_accent';
+
+    // Check if path is available and we're at user level.
     $page['#attached']['library'][] = 'gin_login/gin_login';
+
+    // Expose settings to JS.
+    $page['#attached']['drupalSettings']['gin']['accent_color'] = $accent_color;
+    $page['#attached']['drupalSettings']['gin']['darkmode'] = $darkmode;
   }
 }
 

@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     min-height: 100vh;
     max-height: 100%;
-    background: #fff;
+    background: var(--colorGinLayerBackground);
 
     @media (min-width: $breakpoint) {
       flex-wrap: nowrap;
@@ -95,6 +95,7 @@
       padding: 0;
       border: 0 none;
       box-shadow: none;
+      background: transparent;
     }
 
     .form-type--text,
