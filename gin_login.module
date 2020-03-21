@@ -21,8 +21,12 @@ function gin_login_page_attachments_alter(&$page) {
     $route == 'user.register'
   ) {
     // Get theme configs.
-    $accent_color = theme_get_setting('accent_color', 'gin');
     $darkmode = theme_get_setting('enable_darkmode', 'gin');
+    $darkmode_class = 'gin--dark-mode';
+    $preset_accent_color = theme_get_setting('preset_accent_color', 'gin');
+    $accent_color = theme_get_setting('accent_color', 'gin');
+    $preset_focus_color = theme_get_setting('preset_focus_color', 'gin');
+    $focus_color = theme_get_setting('focus_color', 'gin');
 
     // Attach Gin styles.
     $page['#attached']['library'][] = 'gin/gin';
@@ -34,8 +38,13 @@ function gin_login_page_attachments_alter(&$page) {
     $page['#attached']['library'][] = 'gin_login/gin_login';
 
     // Expose settings to JS.
-    $page['#attached']['drupalSettings']['gin']['accent_color'] = $accent_color;
+
     $page['#attached']['drupalSettings']['gin']['darkmode'] = $darkmode;
+    $page['#attached']['drupalSettings']['gin']['darkmode_class'] = $darkmode_class;
+    $page['#attached']['drupalSettings']['gin']['preset_accent_color'] = $preset_accent_color;
+    $page['#attached']['drupalSettings']['gin']['accent_color'] = $accent_color;
+    $page['#attached']['drupalSettings']['gin']['preset_focus_color'] = $preset_focus_color;
+    $page['#attached']['drupalSettings']['gin']['focus_color'] = $focus_color;
   }
 }
 
