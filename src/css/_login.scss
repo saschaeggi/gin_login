@@ -123,6 +123,10 @@
       padding: 1.25rem 1rem;
       margin-right: 0;
       margin-bottom: 0;
+
+      &--primary {
+        margin-top: 0;
+      }
     }
 
     .register-button {
@@ -132,7 +136,7 @@
 
     .forgot-password-link {
       display: inline-block;
-      margin-top: 1rem;
+      margin-top: 2rem;
     }
   }
 
