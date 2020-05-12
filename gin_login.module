@@ -63,26 +63,6 @@ function gin_login_preprocess_html(&$variables) {
 }
 
 /**
- * Page title alter()
- */
-function gin_login_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
-  // Get path.
-  $route = \Drupal::routeMatch()->getRouteName();
-
-  // Chek if path is available and we're at user level.
-  if (
-    $route == 'user.login' ||
-    $route == 'user.pass' ||
-    $route == 'user.register'
-  ) {
-    $path = str_replace('.', '_', $route);
-
-    $suggestions[] = 'page_title__user';
-    $suggestions[] = 'page_title__' . $path;
-  }
-}
-
-/**
  * Form_alter()
  */
 function gin_login_form_alter(&$form, $form_state, $form_id) {
