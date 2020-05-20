@@ -1,6 +1,6 @@
 .path-user {
   .user-form-page {
-    $breakpoint: 1024px;
+    $breakpoint: 800px;
 
     display: flex;
     flex-wrap: wrap;
@@ -31,7 +31,12 @@
       max-width: $breakpoint;
 
       @media (max-width: $breakpoint) {
+        flex-basis: 100%;
         align-content: flex-start;
+      }
+
+      @media (min-width: $breakpoint) {
+        min-width: 640px;
       }
     }
 
@@ -44,6 +49,7 @@
       @media (min-width: $breakpoint) {
         display: flex;
         flex-grow: 1;
+        flex-basis: 70%;
       }
 
       img {
@@ -57,8 +63,11 @@
     }
 
     &__page-title {
-      font-weight: 400;
+      font-size: 2rem;
       margin-top: 0;
+      width: 100%;
+      max-width: 100%;
+      text-overflow: unset;
 
       @media (min-width: $breakpoint) {
         font-size: 3rem;

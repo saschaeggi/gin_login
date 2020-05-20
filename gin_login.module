@@ -20,7 +20,7 @@ function gin_login_page_attachments_alter(&$page) {
     $preset_focus_color = theme_get_setting('preset_focus_color', 'gin');
     $focus_color = theme_get_setting('focus_color', 'gin');
 
-    // Define darkmode class
+    // Define darkmode class.
     $darkmode_class = 'gin--dark-mode';
 
     // Attach Gin styles.
@@ -152,9 +152,18 @@ function gin_login_css_alter(&$css, $assets) {
  * Implements hook_preprocess_HOOK().
  */
 function gin_login_preprocess_ginlogin(&$variables) {
+  $darkmode = theme_get_setting('enable_darkmode', 'gin');
   $config = \Drupal::config('gin_login.settings');
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
-  $defaultLogo = drupal_get_path('module', 'gin_login') . '/images/drupal.svg';
+
+  if (!$darkmode) {
+    $default_logo = '/images/gin.svg';
+  }
+  else {
+    $default_logo = '/images/gin_darkmode.svg';
+  }
+
+  $defaultLogo = drupal_get_path('module', 'gin_login') . $default_logo;
   $variables['logo'] = file_create_url($defaultLogo);
   $configData = $config->get();
 
