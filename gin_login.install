@@ -16,3 +16,21 @@ function gin_login_update_8101() {
     ->set('brand_image.use_default', TRUE)
     ->save();
 }
+
+/**
+ * Implements hook_requirements().
+ */
+function gin_login_requirements() {
+  $requirements = [];
+  $theme_handler = \Drupal::service('theme_handler');
+  $theme_list = $theme_handler->listInfo();
+
+  if (empty($theme_list['claro'])) {
+    $requirements['gin_login_requirements'] = [
+      'title' => t('Gin Login requirements'),
+      'severity' => REQUIREMENT_ERROR,
+      'description' => t('Claro must be installed.'),
+    ];
+  }
+  return $requirements;
+}
