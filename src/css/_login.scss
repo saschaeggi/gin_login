@@ -1,4 +1,4 @@
-.path-user {
+body.path-user {
   .user-form-page {
     $breakpoint: 800px;
 
@@ -37,6 +37,11 @@
 
       @media (min-width: $breakpoint) {
         min-width: 640px;
+      }
+
+      img {
+        max-width: 44px;
+        max-height: 40px;
       }
     }
 
