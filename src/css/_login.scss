@@ -73,6 +73,7 @@ body.path-user {
       width: 100%;
       max-width: 100%;
       text-overflow: unset;
+      white-space: normal;
 
       @media (min-width: $breakpoint) {
         font-size: 3rem;
