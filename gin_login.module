@@ -35,6 +35,9 @@ function gin_login_page_attachments_alter(&$page) {
       // Attach accent overrides CSS.
       $page['#attached']['library'][] = 'gin/gin_accent';
 
+      // Attach custom Gin overrides
+      $page['#attached']['library'][] = 'gin/gin_custom_css';
+
       // Expose settings to JS.
       $page['#attached']['drupalSettings']['gin']['darkmode'] = $darkmode;
       $page['#attached']['drupalSettings']['gin']['darkmode_class'] = $darkmode_class;
