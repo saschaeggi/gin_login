@@ -2,6 +2,7 @@
 
 namespace Drupal\gin_login\Theme;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 
@@ -10,6 +11,15 @@ use Drupal\Core\Theme\ThemeNegotiatorInterface;
  * Credit to jimconte https://jimconte.com/blog/web/dynamic-theme-switching-in-drupal-8.
  */
 class ThemeNegotiator implements ThemeNegotiatorInterface {
+
+  /** @var ConfigFactoryInterface */
+  protected $configFactory;
+
+  public function __construct(
+    ConfigFactoryInterface $configFactory
+  ) {
+    $this->configFactory = $configFactory;
+  }
 
   /**
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
@@ -40,7 +50,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
         $route_match->getRouteName() == 'user.pass' ||
         $route_match->getRouteName() == 'user.register'
       ) {
-      return 'claro';
+      return $this->configFactory->get('system.theme')->get('admin');
     }
 
     return FALSE;
