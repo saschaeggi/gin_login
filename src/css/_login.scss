@@ -134,17 +134,6 @@ body.path-user {
       margin-top: 0;
     }
 
-    .button {
-      width: 100%;
-      padding: 1.25rem 1rem;
-      margin-right: 0;
-      margin-bottom: 0;
-
-      &--primary {
-        margin-top: 0;
-      }
-    }
-
     .register-button {
       width: 100%;
       margin-right: 0;
@@ -157,6 +146,17 @@ body.path-user {
   }
 
   .user-login-form {
+    .button {
+      width: 100%;
+      padding: 1.25rem 1rem;
+      margin-right: 0;
+      margin-bottom: 0;
+
+      &--primary {
+        margin-top: 0;
+      }
+    }
+
     .form-actions {
       display: block;
       margin-bottom: 0;
