@@ -2,5 +2,4 @@ type: module
 name: Gin Login
 description: Custom Drupal Login for Gin theme
 configure: gin_login.configuration_form
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
