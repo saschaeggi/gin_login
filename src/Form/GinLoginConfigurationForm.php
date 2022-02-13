@@ -65,7 +65,9 @@ class GinLoginConfigurationForm extends ConfigFormBase {
       '#maxlength' => 40,
       '#description' => t("If you don't have direct file access to the server, use this field to upload your logo."),
       '#upload_validators' => [
-        'file_validate_extensions' => [],
+        'file_validate_extensions' => [
+          'png gif jpg jpeg apng webp avif svg',
+        ],
       ],
     ];
 
