@@ -187,7 +187,7 @@ function gin_login_preprocess_ginlogin(&$variables) {
 
   if ($configData['logo']['use_default'] == "0") {
     if (isset($configData['logo']['path']) && !empty($configData['logo']['path'])) {
-      $variables['logo'] = file_create_url($configData['logo']['path']);
+      $variables['icon_path'] = file_create_url($configData['logo']['path']);
     }
   }
 
