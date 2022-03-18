@@ -68,6 +68,9 @@ function gin_login_preprocess_html(&$variables) {
     if ($settings->get('high_contrast_mode')) {
       $variables['attributes']['class'][] = 'gin--high-contrast-mode';
     }
+
+    // Add identification class to paths.
+    $variables['attributes']['class'][] = 'gin-login';
   }
 }
 
