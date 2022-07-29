@@ -156,8 +156,7 @@ function gin_login_theme() {
  * CSS_alter()
  */
 function gin_login_css_alter(&$css, $assets) {
-  // UPDATE THIS PATH TO YOUR MODULE'S CSS PATH.
-  $path = drupal_get_path('module', 'gin_login') . '/dist/css/login.css';
+  $path = \Drupal::service('extension.list.module')->getPath('gin_login') . '/dist/css/login.css';
   if (isset($css[$path])) {
     // Use anything greater than 100 to have it load
     // after the theme as CSS_AGGREGATE_THEME is set to 100.
@@ -175,6 +174,7 @@ function gin_login_preprocess_ginlogin(&$variables) {
   $themeIconPath = theme_get_setting('icon_path', $theme);
   $themeUseDefaultIcon = theme_get_setting('icon_default', $theme);
   $darkmode = theme_get_setting('enable_darkmode', $theme);
+  $fileUrlGenerator = \Drupal::service('file_url_generator');
 
   // #3258015: Make sure we're compatible with the new variant.
   if ($themeUseDefaultIcon === NULL) {
@@ -183,14 +183,14 @@ function gin_login_preprocess_ginlogin(&$variables) {
   }
 
   if (!$themeUseDefaultIcon && !empty($themeIconPath)) {
-    $variables['icon_path'] = file_create_url($themeIconPath);
+    $variables['icon_path'] = $fileUrlGenerator->generateAbsoluteString($themeIconPath);
   }
 
   $configData = $config->get();
 
   if ($configData['logo']['use_default'] == "0") {
     if (isset($configData['logo']['path']) && !empty($configData['logo']['path'])) {
-      $variables['icon_path'] = file_create_url($configData['logo']['path']);
+      $variables['icon_path'] = $fileUrlGenerator->generateAbsoluteString($configData['logo']['path']);
     }
   }
 
@@ -199,7 +199,7 @@ function gin_login_preprocess_ginlogin(&$variables) {
 
   if ($configData['brand_image']['use_default'] == "0") {
     if (isset($configData['brand_image']['path']) && !empty($configData['brand_image']['path'])) {
-      $variables['brand_image'] = file_create_url($configData['brand_image']['path']);
+      $variables['brand_image'] = $fileUrlGenerator->generateAbsoluteString($configData['brand_image']['path']);
       $variables['brand_alt'] = '';
     }
   }
