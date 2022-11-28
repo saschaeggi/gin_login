@@ -143,12 +143,14 @@ body.gin-login .user-form-page__wallpaper {
   }
 }
 body.gin-login .user-form-page__wallpaper img {
+  opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  animation: fadeInWallpaper 300ms ease forwards;
 }
 body.gin-login .user-form-page__page-title {
   font-size: 2rem;
@@ -237,6 +239,14 @@ body.gin-login .page-wrapper {
   margin-top: 0;
 }
 
+@keyframes fadeInWallpaper {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 #sliding-popup {
   display: none !important;
 }
