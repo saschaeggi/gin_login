@@ -177,6 +177,7 @@ function gin_login_preprocess_ginlogin(&$variables) {
   $themeUseDefaultIcon = theme_get_setting('icon_default', $theme);
   $darkmode = theme_get_setting('enable_darkmode', $theme);
   $fileUrlGenerator = \Drupal::service('file_url_generator');
+  $path = \Drupal::service('extension.list.module')->getPath('gin_login');
 
   // #3258015: Make sure we're compatible with the new variant.
   if ($themeUseDefaultIcon === NULL) {
@@ -196,8 +197,8 @@ function gin_login_preprocess_ginlogin(&$variables) {
     }
   }
 
-  $variables['brand_image'] = '//source.unsplash.com/collection/9407737';
-  $variables['brand_alt'] = 'Random image from unsplash';
+  $variables['brand_image'] = $fileUrlGenerator->generateAbsoluteString($path . '/images/eberhard-grossgasteiger-f4OFym_1JsM-unsplash.jpg');
+  $variables['brand_alt'] = 'Image by Eberhard Grossgasteiger, Unsplash';
 
   if ($configData['brand_image']['use_default'] == "0") {
     if (isset($configData['brand_image']['path']) && !empty($configData['brand_image']['path'])) {
