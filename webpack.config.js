@@ -6,7 +6,7 @@ const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
 module.exports = {
   entry: {
-    login: ['./src/css/login.scss'],
+    login: ['./src/css/login.scss', './src/js/login.js'],
   },
   output: {
     filename: 'js/[name].js',

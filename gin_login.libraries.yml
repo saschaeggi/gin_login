@@ -3,3 +3,5 @@ gin_login:
   css:
     theme:
       dist/css/login.css: { minified: false, weight: -99 }
+  js:
+    dist/js/login.js: { minified: false }

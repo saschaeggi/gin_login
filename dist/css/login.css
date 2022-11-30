@@ -112,7 +112,7 @@ body.gin-login .user-form-page__user-form, body.gin-login .user-form-page__wallp
 body.gin-login .user-form-page__user-form {
   display: flex;
   flex-wrap: wrap;
-  max-width: 800px;
+  flex-basis: 60%;
 }
 @media (max-width: 800px) {
   body.gin-login .user-form-page__user-form {
@@ -120,9 +120,9 @@ body.gin-login .user-form-page__user-form {
     align-content: flex-start;
   }
 }
-@media (min-width: 800px) {
+@media (min-width: 1800px) {
   body.gin-login .user-form-page__user-form {
-    min-width: 640px;
+    flex-basis: 50%;
   }
 }
 body.gin-login .user-form-page__user-form img {
@@ -139,16 +139,23 @@ body.gin-login .user-form-page__wallpaper {
   body.gin-login .user-form-page__wallpaper {
     display: flex;
     flex-grow: 1;
-    flex-basis: 70%;
+    flex-basis: 40%;
+  }
+}
+@media (min-width: 1800px) {
+  body.gin-login .user-form-page__wallpaper {
+    flex-basis: 50%;
   }
 }
 body.gin-login .user-form-page__wallpaper img {
+  opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  animation: fadeInWallpaper 300ms ease forwards;
 }
 body.gin-login .user-form-page__page-title {
   font-size: 2rem;
@@ -237,6 +244,14 @@ body.gin-login .page-wrapper {
   margin-top: 0;
 }
 
+@keyframes fadeInWallpaper {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 #sliding-popup {
   display: none !important;
 }
