@@ -1,14 +1,14 @@
 ((Drupal, drupalSettings, once) => {
-  Drupal.behaviors.ginAccent = {
+  Drupal.behaviors.ginLoginWallpaper = {
     attach: function attach(context) {
       once('ginLogin', '.user-form-page__wallpaper', context).forEach(() => {
         // Random wallpaper.
-        Drupal.ginLogin.randomWallpaper();
+        Drupal.ginLoginWallpaper.randomWallpaper();
       });
     },
   };
 
-  Drupal.ginLogin = {
+  Drupal.ginLoginWallpaper = {
     randomWallpaper: () => {
       const path = drupalSettings.gin_login.path + '/images/wallpapers/';
       const wallpapers = [

@@ -32,7 +32,7 @@ Install as you would normally install a contributed Drupal module. For further i
 
 ## Configuration
 
- - Navigate to Admin > Gin Login
+ - Navigate to Administration > Configuration > System > Gin Login
 
 ## Troubleshooting
 
