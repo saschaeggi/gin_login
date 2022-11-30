@@ -19,7 +19,7 @@ This module provides a nice login screen based on either Claro or Gin.
 
 ## Requirements
 
-This module requires Drupal core >= 8. It also requires either the [Gin Admin Theme](https://drupal.org/project/gin) or Claro to be enabled as default admin theme.
+This module requires Drupal core >= 8.9. It also requires either the [Gin Admin Theme](https://drupal.org/project/gin) or Claro to be enabled as default admin theme.
 
 ## Recommended modules
 
