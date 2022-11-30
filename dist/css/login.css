@@ -112,7 +112,7 @@ body.gin-login .user-form-page__user-form, body.gin-login .user-form-page__wallp
 body.gin-login .user-form-page__user-form {
   display: flex;
   flex-wrap: wrap;
-  max-width: 800px;
+  flex-basis: 60%;
 }
 @media (max-width: 800px) {
   body.gin-login .user-form-page__user-form {
@@ -120,9 +120,9 @@ body.gin-login .user-form-page__user-form {
     align-content: flex-start;
   }
 }
-@media (min-width: 800px) {
+@media (min-width: 1800px) {
   body.gin-login .user-form-page__user-form {
-    min-width: 640px;
+    flex-basis: 50%;
   }
 }
 body.gin-login .user-form-page__user-form img {
@@ -139,7 +139,12 @@ body.gin-login .user-form-page__wallpaper {
   body.gin-login .user-form-page__wallpaper {
     display: flex;
     flex-grow: 1;
-    flex-basis: 70%;
+    flex-basis: 40%;
+  }
+}
+@media (min-width: 1800px) {
+  body.gin-login .user-form-page__wallpaper {
+    flex-basis: 50%;
   }
 }
 body.gin-login .user-form-page__wallpaper img {
