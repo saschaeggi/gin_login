@@ -27,8 +27,8 @@ Submit bug reports and feature suggestions, or track changes in the
 
 This module requires the following modules:
 
-[Gin Admin Theme](https://drupal.org/project/gin)
-- Claro to be enabled as default admin theme.
+- [Gin Admin Theme](https://drupal.org/project/gin)
+- or Claro to be enabled as default admin theme
 
 
 ## Recommended modules
@@ -46,7 +46,7 @@ information, see
 
 ## Configuration
 
-- Navigate to Administration > Configuration > System > Gin Login
+Navigate to Administration > Configuration > System > Gin Login
 
 
 ## Troubleshooting
