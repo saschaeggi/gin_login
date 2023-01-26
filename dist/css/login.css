@@ -60,6 +60,7 @@ button.link:active,
 }
 
 body.gin-login .toolbar-icon-default {
+  font-size: 0;
   text-indent: -999em;
 }
 body.gin-login .toolbar-icon-default::before {
@@ -126,7 +127,7 @@ body.gin-login .user-form-page__user-form {
   }
 }
 body.gin-login .user-form-page__user-form img {
-  width: 100%;
+  max-width: 100%;
   max-height: 40px;
 }
 body.gin-login .user-form-page__wallpaper {
@@ -183,7 +184,7 @@ body.gin-login .user-form-page .content-header {
   }
 }
 body.gin-login .user-form-page .content-header a {
-  display: inline-flex;
+  display: flex;
 }
 body.gin-login .user-form-page .layout-container {
   max-width: 560px;
