@@ -3,6 +3,7 @@ body.gin-login {
   $breakpointLg: 1800px;
 
   .toolbar-icon-default {
+    font-size: 0;
     text-indent: -999em;
 
     &::before {
@@ -66,7 +67,7 @@ body.gin-login {
       }
 
       img {
-        width: 100%;
+        max-width: 100%;
         max-height: 40px;
       }
     }
@@ -124,7 +125,7 @@ body.gin-login {
       }
 
       a {
-        display: inline-flex;
+        display: flex;
       }
     }
 
