@@ -46,7 +46,7 @@ information, see
 
 ## Configuration
 
-1. Navigate to Administration > Configuration > System > Gin Login
+- Navigate to Administration > Configuration > System > Gin Login
 
 
 ## Troubleshooting
@@ -60,4 +60,4 @@ information, see
 
 ## Maintainers
 
-- Sascha Eggenberger - [saschaeggi](https://www.drupal.org/u/saschaeggi)
+- Sascha Eggenberger - [@saschaeggi](https://www.drupal.org/u/saschaeggi)
