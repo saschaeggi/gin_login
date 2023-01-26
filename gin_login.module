@@ -166,18 +166,6 @@ function gin_login_theme() {
   return $theme;
 }
 
-// /**
-//  * CSS_alter()
-//  */
-// function gin_login_css_alter(&$css, $assets) {
-//   $path = \Drupal::service('extension.list.module')->getPath('gin_login') . '/dist/css/login.css';
-//   if (isset($css[$path])) {
-//     // Use anything greater than 100 to have it load
-//     // after the theme as CSS_AGGREGATE_THEME is set to 100.
-//     $css[$path]['group'] = 201;
-//   }
-// }
-
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -212,7 +200,8 @@ function gin_login_preprocess_ginlogin(&$variables) {
     if (isset($configData['brand_image']['path']) && !empty($configData['brand_image']['path'])) {
       $variables['brand_image'] = $fileUrlGenerator->generateAbsoluteString($configData['brand_image']['path']);
     }
-  } else {
+  }
+  else {
     $variables['brand_image'] = '';
   }
 }
