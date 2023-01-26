@@ -62,7 +62,6 @@ class GinLoginConfigurationForm extends ConfigFormBase {
     $form['logo']['settings']['logo_upload'] = [
       '#type' => 'file',
       '#title' => t('Upload image'),
-      '#maxlength' => 40,
       '#description' => t("If you don't have direct file access to the server, use this field to upload your logo."),
       '#upload_validators' => [
         'file_validate_extensions' => [
@@ -99,7 +98,6 @@ class GinLoginConfigurationForm extends ConfigFormBase {
     $form['brand_image']['settings']['brand_image_upload'] = [
       '#type' => 'file',
       '#title' => t('Upload image'),
-      '#maxlength' => 40,
       '#description' => t("If you don't have direct file access to the server, use this field to upload your brand image."),
       '#upload_validators' => [
         'file_validate_is_image' => [],
