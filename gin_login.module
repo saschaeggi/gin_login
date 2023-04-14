@@ -116,10 +116,11 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
     ];
 
     // Register button.
-    if (\Drupal::config('user.settings')->get('register') != UserInterface::REGISTER_ADMINISTRATORS_ONLY) {
+    $register_url = Url::fromRoute('user.register');
+    if ($register_url->access()) {
       $form['more-links']['register_button'] = [
         '#type' => 'link',
-        '#url' => Url::fromRoute('user.register'),
+        '#url' => $register_url,
         '#title' => t('Create new account'),
         '#attributes' => [
           'class' => [
