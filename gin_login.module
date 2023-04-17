@@ -98,6 +98,14 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
   // User form (Login, Register or Forgot password)
   if (strpos($form_id, 'user_login') !== FALSE || strpos($form_id, 'user_register') !== FALSE || strpos($form_id, 'user_pass') !== FALSE) {
     $form['actions']['submit']['#attributes']['class'][] = 'button--primary';
+
+    if (\Drupal::state()->get('system.maintenance_mode')) {
+      $form['maintenance_message'] = [
+        '#type' => 'markup',
+        '#markup' => t('Operating in maintenance mode.'),
+        '#weight' => -10,
+      ];
+    }
   }
 
   // Adding button/links to Register and Forgot password.
