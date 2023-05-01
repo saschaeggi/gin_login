@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Url;
-use Drupal\user\UserInterface;
 use Drupal\gin\GinSettings;
 
 /**
@@ -93,7 +92,7 @@ function gin_login_preprocess_html(&$variables) {
  */
 function gin_login_form_alter(&$form, $form_state, $form_id) {
   // User form (Login, Register or Forgot password)
-  if (strpos($form_id, 'user_login') !== FALSE || strpos($form_id, 'user_register') !== FALSE || strpos($form_id, 'user_pass') !== FALSE) {
+  if (strpos($form_id, 'user_login') !== FALSE || strpos($form_id, 'user_register') !== FALSE || in_array($form_id, ['user_pass'])) {
     $form['actions']['submit']['#attributes']['class'][] = 'button--primary';
   }
 
@@ -140,7 +139,7 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
   }
 
   // Changing name of Reset button.
-  if (strpos($form_id, 'user_pass') !== FALSE) {
+  if (in_array($form_id, ['user_pass'])) {
     $form['actions']['submit']['#value'] = t('Reset');
   }
 }
