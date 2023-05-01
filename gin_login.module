@@ -8,6 +8,7 @@
 use Drupal\Core\Url;
 use Drupal\user\UserInterface;
 use Drupal\gin\GinSettings;
+use Drupal\Component\Render\FormattableMarkup;
 
 /**
  * Page_attachments_alter()
@@ -99,12 +100,14 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
   if (strpos($form_id, 'user_login') !== FALSE || strpos($form_id, 'user_register') !== FALSE || strpos($form_id, 'user_pass') !== FALSE) {
     $form['actions']['submit']['#attributes']['class'][] = 'button--primary';
 
+    // Check if site is in maintenance mode.
+    // Display a message if true.
     if (\Drupal::state()->get('system.maintenance_mode')) {
-      $form['maintenance_message'] = [
-        '#type' => 'markup',
-        '#markup' => t('Operating in maintenance mode.'),
-        '#weight' => -10,
-      ];
+      \Drupal::messenger()->addWarning(
+        new FormattableMarkup(\Drupal::config('system.maintenance')->get('message'), [
+          '@site' => \Drupal::config('system.site')->get('name'),
+        ])
+      );
     }
   }
 
