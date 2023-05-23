@@ -7,6 +7,7 @@
 
 use Drupal\Core\Url;
 use Drupal\gin\GinSettings;
+use Drupal\Component\Render\FormattableMarkup;
 
 /**
  * Page_attachments_alter()
@@ -97,6 +98,16 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
   // User form (Login, Register or Forgot password)
   if (strpos($form_id, 'user_login') !== FALSE || strpos($form_id, 'user_register') !== FALSE || in_array($form_id, ['user_pass'])) {
     $form['actions']['submit']['#attributes']['class'][] = 'button--primary';
+
+    // Check if site is in maintenance mode.
+    // Display a message if true.
+    if (\Drupal::state()->get('system.maintenance_mode')) {
+      \Drupal::messenger()->addWarning(
+        new FormattableMarkup(\Drupal::config('system.maintenance')->get('message'), [
+          '@site' => \Drupal::config('system.site')->get('name'),
+        ])
+      );
+    }
   }
 
   // Adding button/links to Register and Forgot password.
