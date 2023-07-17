@@ -102,6 +102,9 @@ class GinLoginConfigurationForm extends ConfigFormBase {
       '#description' => t("If you don't have direct file access to the server, use this field to upload your brand image."),
       '#upload_validators' => [
         'file_validate_is_image' => [],
+        'file_validate_extensions' => [
+          'png gif jpg jpeg apng webp avif',
+        ],
       ],
     ];
     return parent::buildForm($form, $form_state);
