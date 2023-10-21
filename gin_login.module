@@ -167,6 +167,11 @@ function gin_login_theme() {
   $theme['page__user__login'] = [
     'template' => 'page--user--login',
     'preprocess functions' => ['gin_login_preprocess_ginlogin'],
+    'variables' => [
+      'brand_image' => NULL,
+      'brand_alt' => NULL,
+      'icon_path' => NULL,
+    ],
   ];
   $theme['page__user__password'] = [
     'template' => 'page--user--password',
