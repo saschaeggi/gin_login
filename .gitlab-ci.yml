@@ -26,8 +26,8 @@ stylelint:
 frontend:
   stage: build
   script:
-    - npm install
-    - npm run build
+    - yarn install
+    - yarn build
     - 'git diff --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)'
   artifacts:
     paths:
