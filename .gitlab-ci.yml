@@ -28,7 +28,7 @@ frontend:
   script:
     - npm install
     - npm run build
-    - git diff --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)
+    - 'git diff --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)'
   artifacts:
     paths:
       - node_modules/
