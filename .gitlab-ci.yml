@@ -30,6 +30,7 @@ frontend:
     GIT_STRATEGY: fetch
     GIT_CHECKOUT: "true"
   script:
+    - apk add bash git openssh
     - npm install
     - npm run build
     - 'git diff src dist --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)'
