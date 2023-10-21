@@ -29,8 +29,8 @@ frontend:
     GIT_STRATEGY: fetch
     GIT_CHECKOUT: "true"
   script:
-    - yarn install
-    - yarn build
+    - npm install
+    - npm run build
     - 'git diff src dist --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)'
   artifacts:
     paths:
