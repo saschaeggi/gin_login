@@ -22,3 +22,14 @@ stylelint:
   stage: test
   script:
     - yarn version
+
+frontend:
+  stage: build
+  script:
+    - npm install
+    - npm run build
+    - git diff --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 week
