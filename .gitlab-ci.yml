@@ -33,7 +33,7 @@ frontend:
     - apk add bash git openssh
     - npm install
     - npm run build
-    - 'git diff src dist --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)'
+    - 'git diff --exit-code src dist || (echo "Error: Uncommitted changes detected"; exit 1)'
   artifacts:
     paths:
       - node_modules/
