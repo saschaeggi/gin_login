@@ -28,8 +28,9 @@ frontend:
   script:
     - yarn install
     - yarn build
+    - cd $WEB_ROOT/modules/custom/gin_login
     - 'git diff --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)'
   artifacts:
     paths:
       - node_modules/
-    expire_in: 1 week
+    expire_in: 6 mos
