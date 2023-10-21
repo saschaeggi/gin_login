@@ -26,7 +26,8 @@ stylelint:
 frontend:
   stage: build
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: fetch
+    GIT_CHECKOUT: "true"
   script:
     - yarn install
     - yarn build
