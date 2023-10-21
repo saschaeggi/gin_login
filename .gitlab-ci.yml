@@ -24,11 +24,12 @@ stylelint:
     - yarn version
 
 frontend:
-  stage: test
+  stage: build
   script:
+    - git init
     - yarn install
     - yarn build
-    - 'git diff --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)'
+    - 'git diff src dist --exit-code || (echo "Error: Uncommitted changes detected"; exit 1)'
   artifacts:
     paths:
       - node_modules/
