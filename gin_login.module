@@ -5,9 +5,9 @@
  * gin_login.module
  */
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Url;
 use Drupal\gin\GinSettings;
-use Drupal\Component\Render\FormattableMarkup;
 
 /**
  * Page_attachments_alter()
@@ -221,6 +221,32 @@ function gin_login_preprocess_ginlogin(&$variables) {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter() for 'page'.
+ */
+function gin_login_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if (!_gin_login_gin_is_active()) {
+    return;
+  }
+
+  // Get path from Route.
+  $route = \Drupal::routeMatch()->getRouteName();
+
+  switch ($route) {
+    case 'user.login':
+      $suggestions[] = 'page__user__login';
+      break;
+
+    case 'user.pass':
+      $suggestions[] = 'page__user__password';
+      break;
+
+    case 'user.register':
+      $suggestions[] = 'page__user__register';
+      break;
+  }
+}
+
+/**
  * Helper function to check if we're on the right paths.
  */
 function _gin_login__check_path() {
@@ -261,7 +287,7 @@ function _gin_login_gin_is_active() {
 
   // Admin theme will have no value if is set to use the default theme.
   if ($admin_theme_name) {
-    $admin_base_themes = isset($theme_handler[$admin_theme_name]->base_themes) ? $theme_handler[$admin_theme_name]->base_themes : [];
+    $admin_base_themes = $theme_handler[$admin_theme_name]->base_themes ?? [];
     $admin_base_themes[$admin_theme_name] = $admin_theme_name;
   }
   else {
