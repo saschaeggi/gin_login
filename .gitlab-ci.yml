@@ -25,6 +25,7 @@ stylelint:
 
 frontend:
   stage: build
+  image: node:16.13-alpine
   variables:
     GIT_STRATEGY: fetch
     GIT_CHECKOUT: "true"
