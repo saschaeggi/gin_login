@@ -2,14 +2,14 @@
 
 namespace Drupal\gin_login\Form;
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\Exception\FileException;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteBuilderInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Routing\RouteBuilderInterface;
 
 /**
  * Class SettingsForm.
@@ -37,7 +37,7 @@ class GinLoginConfigurationForm extends ConfigFormBase {
    */
   protected $routeBuilder;
 
-    /**
+  /**
    * ConfirmDeleteForm constructor.
    *
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
