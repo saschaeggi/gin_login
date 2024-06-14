@@ -263,9 +263,15 @@ function gin_login_gin_ignore_sticky_form_actions() {
   $route = \Drupal::routeMatch()->getRouteName();
   $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
 
-  if (array_key_exists($route, $route_definitions)) {
-    return $route;
-  }
+  // Fallback routes.
+  $fallback_routes = [
+    'user_login_form',
+    'user_pass',
+    'user_register_form',
+  ];
+
+  // Merge route definitions with fallback routes and return them.
+  return array_unique(array_merge(array_keys($route_definitions), $fallback_routes));
 }
 
 /**
