@@ -164,23 +164,14 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
  */
 function gin_login_theme() {
   // Page.
-  $theme['page__user__login'] = [
-    'template' => 'page--user--login',
-    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
-    'variables' => [
-      'brand_image' => NULL,
-      'brand_alt' => NULL,
-      'icon_path' => NULL,
-    ],
-  ];
-  $theme['page__user__password'] = [
-    'template' => 'page--user--password',
-    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
-  ];
-  $theme['page__user__register'] = [
-    'template' => 'page--user--register',
-    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
-  ];
+  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
+
+  foreach ($route_definitions as $route_definition) {
+    $theme[$route_definition['page']] = [
+      'template' => $route_definition['template'],
+      'preprocess functions' => $route_definition['preprocess functions'],
+    ];
+  }
 
   return $theme;
 }
@@ -256,16 +247,24 @@ function gin_login_theme_suggestions_page_alter(array &$suggestions, array $vari
 function _gin_login__check_path() {
   // Get path from Route.
   $route = \Drupal::routeMatch()->getRouteName();
+  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
 
-  if (
-    $route == 'user.login' ||
-    $route == 'user.pass' ||
-    $route == 'user.register'
-  ) {
+  if (array_key_exists($route, $route_definitions)) {
     return TRUE;
   }
-  else {
-    return FALSE;
+  return FALSE;
+}
+
+/**
+ * Ignore gin sticky actions.
+ */
+function gin_login_gin_ignore_sticky_form_actions() {
+  // Get path from Route.
+  $route = \Drupal::routeMatch()->getRouteName();
+  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
+
+  if (array_key_exists($route, $route_definitions)) {
+    return $route;
   }
 }
 
