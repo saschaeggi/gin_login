@@ -8,6 +8,7 @@
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Url;
 use Drupal\gin\GinSettings;
+use Drupal\gin_login\Services\GinLoginRouteService;
 
 /**
  * Page_attachments_alter()
@@ -164,7 +165,7 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
  */
 function gin_login_theme() {
   // Page.
-  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
+  $route_definitions = \Drupal::classResolver(GinLoginRouteService::class)->getLoginRouteDefinitions();
 
   foreach ($route_definitions as $route_definition) {
     $theme[$route_definition['page']] = [
@@ -247,7 +248,7 @@ function gin_login_theme_suggestions_page_alter(array &$suggestions, array $vari
 function _gin_login__check_path() {
   // Get path from Route.
   $route = \Drupal::routeMatch()->getRouteName();
-  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
+  $route_definitions = \Drupal::classResolver(GinLoginRouteService::class)->getLoginRouteDefinitions();
 
   if (array_key_exists($route, $route_definitions)) {
     return TRUE;
@@ -261,7 +262,7 @@ function _gin_login__check_path() {
 function gin_login_gin_ignore_sticky_form_actions() {
   // Get path from Route.
   $route = \Drupal::routeMatch()->getRouteName();
-  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
+  $route_definitions = \Drupal::classResolver(GinLoginRouteService::class)->getLoginRouteDefinitions();
 
   // Fallback routes.
   $fallback_routes = [

@@ -2,13 +2,14 @@
 
 namespace Drupal\gin_login\Services;
 
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class for get the routes of login.
  */
-class GinLoginRouteService {
+class GinLoginRouteService implements ContainerInjectionInterface {
 
   /**
    * The module handler service.
