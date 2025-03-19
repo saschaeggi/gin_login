@@ -167,6 +167,8 @@ function gin_login_theme() {
   // Page.
   $route_definitions = \Drupal::classResolver(GinLoginRouteService::class)->getLoginRouteDefinitions();
 
+  $theme = [];
+
   foreach ($route_definitions as $route_definition) {
     $theme[$route_definition['page']] = [
       'template' => $route_definition['template'],
