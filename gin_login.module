@@ -235,6 +235,7 @@ function gin_login_theme_suggestions_page_alter(array &$suggestions, array $vari
       break;
 
     case 'user.pass':
+    case 'user.reset.form':
       $suggestions[] = 'page__user__password';
       break;
 
