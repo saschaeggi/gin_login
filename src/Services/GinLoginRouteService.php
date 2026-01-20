@@ -68,6 +68,11 @@ class GinLoginRouteService implements ContainerInjectionInterface {
         'template' => 'page--user--password',
         'preprocess functions' => ['gin_login_preprocess_ginlogin'],
       ],
+      'user.logout.confirm' => [
+        'page' => 'page__user__logout_confirm',
+        'template' => 'page--user--logout-confirm',
+        'preprocess functions' => ['gin_login_preprocess_ginlogin'],
+      ],
     ];
 
     $this->moduleHandler->alter('gin_login_route_definitions', $route_definitions);

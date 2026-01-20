@@ -265,6 +265,10 @@ function gin_login_theme_suggestions_page_alter(array &$suggestions, array $vari
     case 'user.register':
       $suggestions[] = 'page__user__register';
       break;
+
+    case 'user.logout.confirm':
+      $suggestions[] = 'page__user__logout_confirm';
+      break;
   }
 }
 
