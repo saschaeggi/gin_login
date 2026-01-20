@@ -210,7 +210,11 @@ function gin_login_preprocess_ginlogin(&$variables) {
 
   if (isset($configData['brand_image']) && $configData['brand_image']['use_default'] == "0") {
     if (isset($configData['brand_image']['path']) && !empty($configData['brand_image']['path'])) {
-      $variables['brand_image'] = $fileUrlGenerator->generateAbsoluteString($configData['brand_image']['path']);
+      $variables['brand_image'] = [
+        '#theme' => 'image',
+        '#uri' => $configData['brand_image']['path'],
+        '#attributes' => ['loading' => 'lazy'],
+      ];
     }
   }
   else {
