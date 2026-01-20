@@ -8,7 +8,6 @@
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Url;
 use Drupal\gin\GinSettings;
-use Drupal\gin_login\Services\GinLoginRouteService;
 
 /**
  * Page_attachments_alter()
