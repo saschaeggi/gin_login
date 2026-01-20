@@ -290,9 +290,7 @@ function _gin_login__check_path() {
  * Ignore gin sticky actions.
  */
 function gin_login_gin_ignore_sticky_form_actions() {
-  // Get path from Route.
-  $route = \Drupal::routeMatch()->getRouteName();
-  $route_definitions = \Drupal::classResolver(GinLoginRouteService::class)->getLoginRouteDefinitions();
+  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
 
   // Fallback routes.
   $fallback_routes = [
