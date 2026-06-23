@@ -90,10 +90,12 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
    */
   private function negotiateRoute(RouteMatchInterface $route_match) {
     $route_definitions = $this->ginLoginRouteService->getLoginRouteDefinitions();
+    $route_name = $route_match->getRouteName() ?? '';
+    $request_route = $this->requestStack->getCurrentRequest()?->attributes->get('_route') ?? '';
 
     if (
-      array_key_exists($route_match->getRouteName(), $route_definitions) ||
-      array_key_exists($this->requestStack->getCurrentRequest()?->attributes->get('_route'), $route_definitions)
+      array_key_exists($route_name, $route_definitions) ||
+      array_key_exists($request_route, $route_definitions)
     ) {
       return $this->configFactory->get('system.theme')->get('admin');
     }
