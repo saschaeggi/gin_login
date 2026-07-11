@@ -11,3 +11,7 @@ services:
     class: Drupal\gin_login\Services\GinLoginRouteService
     arguments:
       - '@module_handler'
+
+  Drupal\gin_login\Hook\GinLoginHooks:
+    class: Drupal\gin_login\Hook\GinLoginHooks
+    autowire: true
