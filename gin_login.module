@@ -245,7 +245,7 @@ function gin_login_preprocess_ginlogin(&$variables) {
  * Implements hook_theme_suggestions_HOOK_alter() for 'page'.
  */
 function gin_login_theme_suggestions_page_alter(array &$suggestions, array $variables) {
-  if (!_gin_login_gin_is_active()) {
+  if (!_gin_login_gin_is_active() && !_gin_login_default_admin_is_active()) {
     return;
   }
 
@@ -324,9 +324,41 @@ function gin_login_gin_ignore_sticky_form_actions() {
 }
 
 /**
+ * Implements hook_default_admin_content_form_ignore_form_ids().
+ *
+ * Default Admin shows every content entity form, including the user
+ * registration form, in its content edit form layout. Keep the Gin Login
+ * layout on the Gin Login pages instead.
+ */
+function gin_login_default_admin_content_form_ignore_form_ids() {
+  return _gin_login__check_path() ? ['user_register_form'] : [];
+}
+
+/**
  * Helper function for check if Gin is active.
  */
 function _gin_login_gin_is_active() {
+  return array_key_exists('gin', _gin_login_admin_base_themes());
+}
+
+/**
+ * Helper function for check if Default Admin is active.
+ *
+ * Default Admin is the administration theme in Drupal core that is based on
+ * Gin. It attaches its own libraries and settings to every page, so Gin Login
+ * only needs to use its page templates with it.
+ */
+function _gin_login_default_admin_is_active() {
+  return array_key_exists('default_admin', _gin_login_admin_base_themes());
+}
+
+/**
+ * Helper function to get the admin theme and its base themes.
+ *
+ * @return array
+ *   The admin theme and its base themes, keyed by theme name.
+ */
+function _gin_login_admin_base_themes() {
   $theme_handler = \Drupal::service('theme_handler')->listInfo();
 
   // Check if set as frontend theme.
@@ -352,7 +384,5 @@ function _gin_login_gin_is_active() {
     $admin_base_themes = $frontend_base_themes;
   }
 
-  $gin_activated = array_key_exists('gin', $admin_base_themes);
-
-  return $gin_activated;
+  return $admin_base_themes;
 }

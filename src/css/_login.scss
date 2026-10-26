@@ -185,6 +185,9 @@ body.gin-login {
     .button {
       width: 100%;
       padding: 1.25rem 1rem;
+      // Default Admin shows link buttons as flex boxes, so center their text
+      // like the text of submit buttons.
+      justify-content: center;
       margin-right: 0;
       margin-bottom: 0;
 

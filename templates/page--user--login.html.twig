@@ -56,7 +56,7 @@
     </header>
 
     <div class="layout-container">
-      {{ page.pre_content|without('claro_primary_local_tasks', 'gin_primary_local_tasks') }}
+      {{ page.pre_content|without('claro_primary_local_tasks', 'gin_primary_local_tasks', 'default_admin_primary_local_tasks') }}
       <main class="page-content clearfix" role="main">
         <div class="visually-hidden"><a id="main-content" tabindex="-1"></a></div>
         {% block title %}
@@ -68,7 +68,7 @@
             {{ page.help }}
           </div>
         {% endif %}
-        {{ page.content|without('claro_primary_local_tasks', 'gin_primary_local_tasks') }}
+        {{ page.content|without('claro_primary_local_tasks', 'gin_primary_local_tasks', 'default_admin_primary_local_tasks') }}
       </main>
 
     </div>

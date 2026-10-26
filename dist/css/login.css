@@ -232,6 +232,7 @@ body.gin-login .user-form-page .link--more {
 body.gin-login .user-login-form .button {
   width: 100%;
   padding: 1.25rem 1rem;
+  justify-content: center;
   margin-right: 0;
   margin-bottom: 0;
 }
