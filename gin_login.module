@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Core\Url;
 use Drupal\gin\GinSettings;
 
@@ -204,14 +205,14 @@ function gin_login_preprocess_ginlogin(&$variables) {
   $config = \Drupal::config('gin_login.settings');
   $theme = \Drupal::theme()->getActiveTheme()->getName();
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
-  $themeIconPath = theme_get_setting('icon_path', $theme);
-  $themeUseDefaultIcon = theme_get_setting('icon_default', $theme);
+  $themeIconPath = _gin_login_theme_get_setting('icon_path', $theme);
+  $themeUseDefaultIcon = _gin_login_theme_get_setting('icon_default', $theme);
   $fileUrlGenerator = \Drupal::service('file_url_generator');
 
   // #3258015: Make sure we're compatible with the new variant.
   if ($themeUseDefaultIcon === NULL) {
-    $themeIconPath = theme_get_setting('logo.path', $theme);
-    $themeUseDefaultIcon = theme_get_setting('logo.use_default', $theme);
+    $themeIconPath = _gin_login_theme_get_setting('logo.path', $theme);
+    $themeUseDefaultIcon = _gin_login_theme_get_setting('logo.use_default', $theme);
   }
 
   if (!$themeUseDefaultIcon && !empty($themeIconPath)) {
@@ -283,6 +284,26 @@ function _gin_login__check_path() {
     return TRUE;
   }
   return FALSE;
+}
+
+/**
+ * Gets a theme setting on all supported Drupal core versions.
+ *
+ * @param string $setting_name
+ *   The name of the setting.
+ * @param string $theme
+ *   The machine name of the theme.
+ *
+ * @return mixed
+ *   The value of the requested setting, NULL if the setting does not exist.
+ */
+function _gin_login_theme_get_setting(string $setting_name, string $theme): mixed {
+  return DeprecationHelper::backwardsCompatibleCall(
+    \Drupal::VERSION,
+    '11.3.0',
+    fn () => \Drupal::service('Drupal\Core\Extension\ThemeSettingsProvider')->getSetting($setting_name, $theme),
+    fn () => theme_get_setting($setting_name, $theme),
+  );
 }
 
 /**

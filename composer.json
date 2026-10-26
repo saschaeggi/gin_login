@@ -18,6 +18,9 @@
         }
     ],
     "require": {},
+    "require-dev": {
+        "drupal/gin": "^3 || ^4 || ^5"
+    },
     "funding": [
         {
             "type": "github",

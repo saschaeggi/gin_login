@@ -6,7 +6,6 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Drupal\gin_login\Services\GinLoginRouteService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -25,11 +24,11 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
   protected ConfigFactoryInterface $configFactory;
 
   /**
-   * The current request.
+   * The request stack.
    *
-   * @var \Symfony\Component\HttpFoundation\Request|null
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  protected Request $request;
+  protected RequestStack $requestStack;
 
   /**
    * The Gin Login Route Service.
@@ -43,14 +42,14 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory interface.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $request
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The current request stack.
    * @param \Drupal\gin_login\Services\GinLoginRouteService $ginLoginRouteService
    *   The Gin Login Route Service.
    */
-  public function __construct(ConfigFactoryInterface $configFactory, RequestStack $request, GinLoginRouteService $ginLoginRouteService) {
+  public function __construct(ConfigFactoryInterface $configFactory, RequestStack $requestStack, GinLoginRouteService $ginLoginRouteService) {
     $this->configFactory = $configFactory;
-    $this->request = $request->getCurrentRequest();
+    $this->requestStack = $requestStack;
     $this->ginLoginRouteService = $ginLoginRouteService;
   }
 
@@ -94,7 +93,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
 
     if (
       array_key_exists($route_match->getRouteName(), $route_definitions) ||
-      array_key_exists(\Drupal::request()->attributes->get('_route'), $route_definitions)
+      array_key_exists($this->requestStack->getCurrentRequest()?->attributes->get('_route'), $route_definitions)
     ) {
       return $this->configFactory->get('system.theme')->get('admin');
     }

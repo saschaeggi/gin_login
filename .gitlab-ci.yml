@@ -1,40 +1,31 @@
 include:
-  # This remote project centralize our CI "golden path" https://docs.gitlab.com/ee/ci/yaml/#includefile
-  remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/templates/.gitlab-ci.yml'
+  - project: $_GITLAB_TEMPLATES_REPO
+    ref: $_GITLAB_TEMPLATES_REF
+    file:
+      - '/includes/include.drupalci.main.yml'
+      - '/includes/include.drupalci.variables.yml'
+      - '/includes/include.drupalci.workflows.yml'
 
-# Override phpcs config
-phpcs:
-  stage: test
-  script:
-    - cp -u phpcs.xml $WEB_ROOT/modules/custom
-    - composer phpcs -- --report-junit=junit.xml --report-full --report-summary
-  allow_failure: false
-  artifacts:
-    expose_as: junit
-    expire_in: 6 mos
-    paths:
-      - junit.xml
-    reports:
-      junit: junit.xml
+variables:
+  # Coding standards errors should fail the pipeline.
+  _PHPCS_ALLOW_FAILURE: '0'
+  # Test on Drupal 10 to check support for Drupal 10.2+.
+  OPT_IN_TEST_PREVIOUS_MAJOR: '1'
+  # Keep stylelint off.
+  SKIP_STYLELINT: '1'
+  # .nvmrc and the frontend job's image use Node 16 to build dist/. The other
+  # jobs use Node 24, because Drupal core's JavaScript tools need a more modern
+  # Node version. Drupal 12 needs Node 24, and 10 and 11 work with it too.
+  _NODE_VERSION: '24'
 
-# Disable stylelint
-stylelint:
-  stage: test
-  script:
-    - yarn version
-
+# Rebuild the CSS and JavaScript, and fail if the files in dist/ don't match
+# what the build creates from src/.
 frontend:
-  stage: build
+  stage: validate
   image: node:16.13-alpine
-  variables:
-    GIT_STRATEGY: fetch
-    GIT_CHECKOUT: "true"
+  needs: []
   script:
     - apk add bash git openssh
     - npm install
     - npm run build
-    - 'git diff --exit-code src dist || (echo "Error: Uncommitted changes detected"; exit 1)'
-  artifacts:
-    paths:
-      - node_modules/
-    expire_in: 6 mos
+    - 'git diff --exit-code src dist || (echo "Error: dist/ does not match the build of src/. Run npm run build and commit the result."; exit 1)'

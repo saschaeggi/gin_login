@@ -10,7 +10,7 @@
 
   Drupal.ginLoginWallpaper = {
     randomWallpaper: () => {
-      const path = drupalSettings.gin_login.path + '/images/wallpapers/';
+      const path = `${drupalSettings.gin_login.path}/images/wallpapers/`;
       const wallpapers = [
         'eberhard-grossgasteiger-uE1fGoWWHsY-unsplash.jpg',
         'eberhard-grossgasteiger-v5qZ8VnPamg-unsplash.jpg',
@@ -21,12 +21,14 @@
         'micha-sager-lsDJyu_uJhw-unsplash.jpg',
       ];
 
-      const wallpaper = wallpapers[Math.floor(Math.random() * wallpapers.length)];
-      let image = new Image();
-      image.src = path+wallpaper;
+      const wallpaper =
+        wallpapers[Math.floor(Math.random() * wallpapers.length)];
+      const image = new Image();
+      image.src = path + wallpaper;
       image.alt = '';
-      document.querySelector('.gin-login .user-form-page__wallpaper').appendChild(image);
+      document
+        .querySelector('.gin-login .user-form-page__wallpaper')
+        .appendChild(image);
     },
-
   };
 })(Drupal, drupalSettings, once);
