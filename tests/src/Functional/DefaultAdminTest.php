@@ -14,6 +14,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  *
  * Default Admin is the administration theme in Drupal core that is based on
  * Gin. It was added in Drupal 11.4.
+ *
+ * @group gin_login
  */
 #[Group('gin_login')]
 #[RunTestsInSeparateProcesses]
