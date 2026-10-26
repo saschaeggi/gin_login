@@ -86,6 +86,11 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
     // Move actions before new elements.
     $form['actions']['#weight'] = '98';
 
+    // Keep captcha before actions.
+    if (isset($form['captcha'])) {
+      $form['captcha']['#weight'] = '97';
+    }
+
     // New wrapper.
     $form['more-links'] = [
       '#type' => 'container',
