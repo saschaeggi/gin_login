@@ -56,7 +56,7 @@ class GinLoginConfigurationForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): static {
     return new static(
       $container->get('module_handler'),
       $container->get('file_system'),
@@ -67,7 +67,7 @@ class GinLoginConfigurationForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
+  protected function getEditableConfigNames(): array {
     return [
       'gin_login.settings',
     ];
@@ -76,14 +76,14 @@ class GinLoginConfigurationForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'gin_login_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $config = $this->config('gin_login.settings');
     $default_scheme = $this->config('system.file')->get('default_scheme');
     $form['logo'] = [
