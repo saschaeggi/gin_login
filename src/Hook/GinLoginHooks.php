@@ -2,7 +2,12 @@
 
 namespace Drupal\gin_login\Hook;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\gin\GinSettings;
 
 /**
@@ -11,10 +16,32 @@ use Drupal\gin\GinSettings;
 class GinLoginHooks {
 
   /**
+   * Constructs a new GinLoginHooks object.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
+   * @param \Drupal\Core\Theme\ThemeManagerInterface $themeManager
+   *   The theme manager.
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface $fileUrlGenerator
+   *   The file URL generator.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   The current route match.
+   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $classResolver
+   *   The class resolver.
+   */
+  public function __construct(
+    protected ConfigFactoryInterface $configFactory,
+    protected ThemeManagerInterface $themeManager,
+    protected FileUrlGeneratorInterface $fileUrlGenerator,
+    protected RouteMatchInterface $routeMatch,
+    protected ClassResolverInterface $classResolver,
+  ) {}
+
+  /**
    * Implements hook_preprocess_HOOK() for html.
    */
   #[Hook('preprocess_html')]
-  public function preprocessHtml(&$variables) {
+  public function preprocessHtml(array &$variables): void {
     if (_gin_login__check_path()) {
       // Add identification class to paths.
       $variables['attributes']['class'][] = 'gin-login';
@@ -22,7 +49,7 @@ class GinLoginHooks {
       if (_gin_login_gin_is_active()) {
         // Get Gin settings.
         /** @var \Drupal\gin\GinSettings $settings */
-        $settings = \Drupal::classResolver(GinSettings::class);
+        $settings = $this->classResolver->getInstanceFromDefinition(GinSettings::class);
 
         // Set accent color.
         $variables['attributes']['data-gin-accent'] = $settings->get('preset_accent_color');
@@ -42,13 +69,12 @@ class GinLoginHooks {
    * Implements hook_preprocess_HOOK().
    */
   #[Hook('preprocess_ginlogin')]
-  public function preprocessGinlogin(&$variables) {
-    $config = \Drupal::config('gin_login.settings');
-    $theme = \Drupal::theme()->getActiveTheme()->getName();
-    $variables['site_name'] = \Drupal::config('system.site')->get('name');
+  public function preprocessGinlogin(array &$variables): void {
+    $config = $this->configFactory->get('gin_login.settings');
+    $theme = $this->themeManager->getActiveTheme()->getName();
+    $variables['site_name'] = $this->configFactory->get('system.site')->get('name');
     $themeIconPath = _gin_login_theme_get_setting('icon_path', $theme);
     $themeUseDefaultIcon = _gin_login_theme_get_setting('icon_default', $theme);
-    $fileUrlGenerator = \Drupal::service('file_url_generator');
 
     // #3258015: Make sure we're compatible with the new variant.
     if ($themeUseDefaultIcon === NULL) {
@@ -57,14 +83,14 @@ class GinLoginHooks {
     }
 
     if (!$themeUseDefaultIcon && !empty($themeIconPath)) {
-      $variables['icon_path'] = $fileUrlGenerator->generateAbsoluteString($themeIconPath);
+      $variables['icon_path'] = $this->fileUrlGenerator->generateAbsoluteString($themeIconPath);
     }
 
     $configData = $config->get();
 
     if (isset($configData['logo']) && $configData['logo']['use_default'] == "0") {
       if (isset($configData['logo']['path']) && !empty($configData['logo']['path'])) {
-        $variables['icon_path'] = $fileUrlGenerator->generateAbsoluteString($configData['logo']['path']);
+        $variables['icon_path'] = $this->fileUrlGenerator->generateAbsoluteString($configData['logo']['path']);
       }
     }
 
@@ -86,13 +112,13 @@ class GinLoginHooks {
    * Implements hook_theme_suggestions_HOOK_alter() for 'page'.
    */
   #[Hook('theme_suggestions_page_alter')]
-  public function themeSuggestionsPageAlter(array &$suggestions, array $variables) {
+  public function themeSuggestionsPageAlter(array &$suggestions, array $variables): void {
     if (!_gin_login_gin_is_active() && !_gin_login_default_admin_is_active()) {
       return;
     }
 
     // Get path from Route.
-    $route = \Drupal::routeMatch()->getRouteName();
+    $route = $this->routeMatch->getRouteName();
 
     switch ($route) {
       case 'user.login':
