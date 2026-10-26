@@ -11,6 +11,10 @@ variables:
   _PHPCS_ALLOW_FAILURE: '0'
   # Test on Drupal 10 to check support for Drupal 10.2+.
   OPT_IN_TEST_PREVIOUS_MAJOR: '1'
+  # Test on Drupal 12 to check support for the next major version.
+  OPT_IN_TEST_NEXT_MAJOR: '1'
+  # Allow Gin and Gin Toolbar, which don't declare Drupal 12 support yet.
+  _LENIENT_ALLOW_LIST: 'gin,gin_toolbar'
   # Keep stylelint off.
   SKIP_STYLELINT: '1'
   # .nvmrc and the frontend job's image use Node 16 to build dist/. The other
