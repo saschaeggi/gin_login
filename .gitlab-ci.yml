@@ -13,6 +13,10 @@ variables:
   OPT_IN_TEST_PREVIOUS_MAJOR: '1'
   # Test on Drupal 12 to check support for the next major version.
   OPT_IN_TEST_NEXT_MAJOR: '1'
+  # Run the previous and next major variants automatically on pushes to the
+  # project and on scheduled pipelines. They stay manual in merge requests.
+  _AUTORUN_PREVIOUS_MAJOR: 'push-and-schedule'
+  _AUTORUN_NEXT_MAJOR: 'push-and-schedule'
   # Allow Gin and Gin Toolbar, which don't declare Drupal 12 support yet.
   _LENIENT_ALLOW_LIST: 'gin,gin_toolbar'
   # Keep stylelint off.
